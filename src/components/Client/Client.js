@@ -4,30 +4,22 @@ import './Client.css';
 
 class Client extends React.Component {
   static propTypes = {
-    id: PropTypes.number,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    secondary_name: PropTypes.string,
-    balance: PropTypes.number.isRequired,
-    // status: PropTypes.string,
+    users: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
+        secondary_name: PropTypes.string.isRequired,
+        balance: PropTypes.number.isRequired,
+      })
+    ),
+    delClient: PropTypes.func.isRequired,
+    editClient: PropTypes.func.isRequired,
   };
 
   state = {
     balance: this.props.balance,
     status: this.props.balance >= 0 ? 'active' : 'blocked',
-  };
-
-  componentDidUpdate = (oldProps, oldState) => {
-    console.log('MobileClient id=' + this.props.id + ' componentDidUpdate');
-    if (this.props.balance !== this.state.balance)
-      this.setState({ balance: this.props.balance });
-  };
-
-  shouldComponentUpdate = (newProps, newState) => {
-    console.log('MobileClient id=' + this.props.id + ' shouldComponentUpdate');
-    return (
-      newProps.fio !== this.props.fio || newProps.balance !== this.state.balance
-    );
   };
 
   render() {
@@ -50,10 +42,20 @@ class Client extends React.Component {
           {this.state.status}
         </td>
         <td>
-          <input className="edit-del-btn" type="button" value="Edit" />
+          <input
+            className="edit-del-btn"
+            type="button"
+            value="Edit"
+            onClick={() => this.props.editClient(this.props.id)}
+          />
         </td>
         <td>
-          <input className="edit-del-btn" type="button" value="Delete" />
+          <input
+            className="edit-del-btn"
+            type="button"
+            value="Delete"
+            onClick={() => this.props.delClient(this.props.id)}
+          />
         </td>
       </tr>
     );
