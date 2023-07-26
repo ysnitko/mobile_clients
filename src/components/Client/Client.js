@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import "./Client.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import './Client.css';
 
 class Client extends React.Component {
   static propTypes = {
@@ -14,17 +14,17 @@ class Client extends React.Component {
 
   state = {
     balance: this.props.balance,
-    status: this.props.balance >= 0 ? "active" : "blocked",
+    status: this.props.balance >= 0 ? 'active' : 'blocked',
   };
 
   componentDidUpdate = (oldProps, oldState) => {
-    console.log("MobileClient id=" + this.props.id + " componentDidUpdate");
+    console.log('MobileClient id=' + this.props.id + ' componentDidUpdate');
     if (this.props.balance !== this.state.balance)
       this.setState({ balance: this.props.balance });
   };
 
   shouldComponentUpdate = (newProps, newState) => {
-    console.log("MobileClient id=" + this.props.id + " shouldComponentUpdate");
+    console.log('MobileClient id=' + this.props.id + ' shouldComponentUpdate');
     return (
       newProps.fio !== this.props.fio || newProps.balance !== this.state.balance
     );
@@ -32,7 +32,7 @@ class Client extends React.Component {
 
   render() {
     console.log(
-      "MobileClient id=" + this.props.id + " render " + this.state.balance
+      'MobileClient id=' + this.props.id + ' render ' + this.state.balance
     );
     return (
       <tr className="User">
@@ -43,17 +43,17 @@ class Client extends React.Component {
         <td
           style={
             this.props.balance >= 0
-              ? { backgroundColor: "green" }
-              : { backgroundColor: "darkred" }
+              ? { backgroundColor: 'green' }
+              : { backgroundColor: 'darkred' }
           }
         >
           {this.state.status}
         </td>
         <td>
-          <input type="button" value="Edit" />
+          <input className="edit-del-btn" type="button" value="Edit" />
         </td>
         <td>
-          <input type="button" value="Delete" />
+          <input className="edit-del-btn" type="button" value="Delete" />
         </td>
       </tr>
     );

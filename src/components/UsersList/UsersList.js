@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import Client from "../Client/Client";
-import "./UsersLits.css";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Client from '../Client/Client';
+import './UsersLits.css';
 
 class UsersList extends PureComponent {
   static propTypes = {
@@ -18,11 +18,11 @@ class UsersList extends PureComponent {
   };
 
   state = {
-    status: "",
+    status: '',
   };
 
   render() {
-    console.log("UserList render");
+    console.log('UserList render');
     const usersList = this.props.users.map((item) => {
       return (
         <Client
@@ -38,7 +38,7 @@ class UsersList extends PureComponent {
     });
     return (
       <>
-        {" "}
+        {' '}
         <table>
           <thead>
             <tr>
@@ -53,7 +53,7 @@ class UsersList extends PureComponent {
           </thead>
           <tbody>{usersList}</tbody>
         </table>
-        <input type="button" value="Add user" />
+        <input className="add-user-btn" type="button" value="Add user" />
       </>
     );
   }

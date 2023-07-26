@@ -1,3 +1,9 @@
 .User {
   border-bottom: 1px solid #ccc;
 }
+
+.edit-del-btn {
+  padding: 2px 10px;
+  border: 1px solid #ccc;
+  border-radius: 0%;
+}
