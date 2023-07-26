@@ -1,0 +1,23 @@
+thead {
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  font-weight: 600;
+}
+
+td {
+  padding: 5px;
+}
+
+table {
+  width: 70%;
+  margin-top: 10px;
+  margin-left: 10px;
+  text-align: center;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+input {
+  margin-top: 5px;
+  margin-left: 10px;
+}

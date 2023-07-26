@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "first_name": "Ivan",
+    "last_name": "Ivanov",
+    "secondary_name": "Ivanovich",
+    "balance": 200
+  },
+  {
+    "id": 2,
+    "first_name": "Petr",
+    "last_name": "Petrov",
+    "secondary_name": "Petrovich",
+    "balance": 250
+  },
+  {
+    "id": 3,
+    "first_name": "Sidor",
+    "last_name": "Sidorov",
+    "secondary_name": "Sidorovich",
+    "balance": 180
+  },
+  {
+    "id": 4,
+    "first_name": "Grigory",
+    "last_name": "Grigoryev",
+    "secondary_name": "Grigorevich",
+    "balance": -250
+  }
+]
