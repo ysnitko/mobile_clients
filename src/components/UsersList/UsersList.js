@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Client from '../Client/Client';
 import './UsersLits.css';
-
 class UsersList extends PureComponent {
   static propTypes = {
     users: PropTypes.arrayOf(
@@ -18,10 +17,7 @@ class UsersList extends PureComponent {
 
   state = {
     users: this.props.users,
-    first_name: this.props.first_name,
-    last_name: this.props.last_name,
-    secondary_name: this.props.secondary_name,
-    balance: this.props.balance,
+    filteredUsers: this.props.users,
   };
 
   handleAddClient = () => {
@@ -35,6 +31,7 @@ class UsersList extends PureComponent {
     const addNewClient = [...this.state.users, newClient];
     this.setState({
       users: addNewClient,
+      filteredUsers: addNewClient,
     });
   };
 
@@ -42,46 +39,66 @@ class UsersList extends PureComponent {
     const deletedClient = this.state.users.filter((user) => user.id !== id);
     this.setState({
       users: deletedClient,
+      filteredUsers: deletedClient,
     });
   };
 
   handleEditClient = () => {
-    const newFirstName = prompt('Enter new first name:').valueOf;
+    const newFirstName = prompt('Enter new first name:');
     const newLastName = prompt('Enter new last name:');
     const newSecondaryName = prompt('Enter new secondary name:');
-    const newBalance = +prompt('Enter new secondary name:');
-    this.setState({
-      first_name: newFirstName,
-      last_name: newLastName,
-      secondary_name: newSecondaryName,
-      balance: newBalance,
-    });
+    const newBalance = +prompt('Enter new balance:');
+    this.setState((prevState) => ({
+      users: prevState.users.map((user) => {
+        if (user.id === this.props.id) {
+          return {
+            ...user,
+            first_name: newFirstName,
+            last_name: newLastName,
+            secondary_name: newSecondaryName,
+            balance: newBalance,
+          };
+        }
+        return user;
+      }),
+      filteredUsers: prevState.filteredUsers.map((user) => {
+        if (user.id === this.props.id) {
+          return {
+            ...user,
+            first_name: newFirstName,
+            last_name: newLastName,
+            secondary_name: newSecondaryName,
+            balance: newBalance,
+          };
+        }
+        return user;
+      }),
+    }));
   };
 
   handleFilterActive = () => {
-    const activeClients = this.props.users.filter((item) => item.balance >= 0);
+    const activeClients = this.state.users.filter((item) => item.balance >= 0);
     this.setState({
-      users: activeClients,
+      filteredUsers: activeClients,
     });
   };
 
   handleFilterBlocked = () => {
-    const activeClients = this.props.users.filter((item) => item.balance < 0);
-
+    const blockedClients = this.state.users.filter((item) => item.balance < 0);
     this.setState({
-      users: activeClients,
+      filteredUsers: blockedClients,
     });
   };
 
   handleShowAll = () => {
     this.setState({
-      users: this.props.users,
+      filteredUsers: this.state.users,
     });
   };
 
   render() {
     console.log('UserList render');
-    const usersList = this.state.users.map((item) => {
+    const usersList = this.state.filteredUsers.map((item) => {
       return (
         <Client
           key={item.id}

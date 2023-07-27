@@ -23,12 +23,7 @@ class Client extends React.Component {
     console.log(
       'MobileClient id=' + this.props.info.id + ' componentDidUpdate'
     );
-    if (
-      this.props.info.balance !== this.state.info.balance ||
-      this.props.info.first_name !== this.state.info.first_name ||
-      this.props.info.last_name !== this.state.info.last_name ||
-      this.props.info.secondary_name !== this.state.info.secondary_name
-    ) {
+    if (this.props.info !== this.state.info) {
       this.setState({
         info: this.props.info,
       });
