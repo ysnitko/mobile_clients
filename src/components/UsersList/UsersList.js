@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import Client from "../Client/Client";
-import "./UsersLits.css";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Client from '../Client/Client';
+import './UsersLits.css';
 
 class UsersList extends PureComponent {
   static propTypes = {
@@ -17,7 +17,6 @@ class UsersList extends PureComponent {
   };
 
   state = {
-    status: "",
     users: this.props.users,
     first_name: this.props.first_name,
     last_name: this.props.last_name,
@@ -28,14 +27,14 @@ class UsersList extends PureComponent {
   handleAddClient = () => {
     const newClient = {
       id: this.props.users.length + 1,
-      first_name: prompt("Enter first name:"),
-      last_name: prompt("Enter last name:"),
-      secondary_name: prompt("Enter secondary name:"),
-      balance: +prompt("Enter balance"),
+      first_name: prompt('Enter first name:'),
+      last_name: prompt('Enter last name:'),
+      secondary_name: prompt('Enter secondary name:'),
+      balance: +prompt('Enter balance'),
     };
-    const updatedClient = [...this.state.users, newClient];
+    const addNewClient = [...this.state.users, newClient];
     this.setState({
-      users: updatedClient,
+      users: addNewClient,
     });
   };
 
@@ -47,10 +46,10 @@ class UsersList extends PureComponent {
   };
 
   handleEditClient = () => {
-    const newFirstName = prompt("Enter new first name:").valueOf;
-    const newLastName = prompt("Enter new last name:");
-    const newSecondaryName = prompt("Enter new secondary name:");
-    const newBalance = +prompt("Enter new secondary name:");
+    const newFirstName = prompt('Enter new first name:').valueOf;
+    const newLastName = prompt('Enter new last name:');
+    const newSecondaryName = prompt('Enter new secondary name:');
+    const newBalance = +prompt('Enter new secondary name:');
     this.setState({
       first_name: newFirstName,
       last_name: newLastName,
@@ -60,29 +59,33 @@ class UsersList extends PureComponent {
   };
 
   handleFilterActive = () => {
-    const activeClients = this.state.users.filter((item) => item.balance >= 0);
-
+    const activeClients = this.props.users.filter((item) => item.balance >= 0);
     this.setState({
       users: activeClients,
     });
   };
 
   handleFilterBlocked = () => {
-    const activeClients = this.state.users.filter((item) => item.balance < 0);
+    const activeClients = this.props.users.filter((item) => item.balance < 0);
 
     this.setState({
       users: activeClients,
     });
   };
 
+  handleShowAll = () => {
+    this.setState({
+      users: this.props.users,
+    });
+  };
+
   render() {
-    console.log("UserList render");
+    console.log('UserList render');
     const usersList = this.state.users.map((item) => {
       return (
         <Client
           key={item.id}
           info={item}
-          status={this.state.status}
           delClient={this.handleDeleteClient}
           editClient={this.handleEditClient}
         />
@@ -91,7 +94,7 @@ class UsersList extends PureComponent {
     return (
       <>
         <div className="btn-block">
-          <input type="button" value="all" />
+          <input type="button" value="all" onClick={this.handleShowAll} />
           <input
             type="button"
             value="active"
