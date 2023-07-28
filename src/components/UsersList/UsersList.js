@@ -18,6 +18,40 @@ class UsersList extends PureComponent {
   state = {
     users: this.props.users,
     filteredUsers: this.props.users,
+    isDisabled: true,
+    isSelected: false,
+  };
+
+  setNewText = (
+    id,
+    firstNameLink,
+    lastNameLink,
+    secondaryLink,
+    balanceLink
+  ) => {
+    let firstName = firstNameLink.current.value;
+    let lastName = lastNameLink.current.value;
+    let secondary = secondaryLink.current.value;
+    let balanceR = balanceLink.current.value;
+    const editedClient = this.state.filteredUsers.map((user) => {
+      if (user.id === id) {
+        return {
+          ...user,
+          first_name: firstName,
+          last_name: lastName,
+          secondary_name: secondary,
+          balance: +balanceR,
+        };
+      }
+      return user;
+    });
+
+    this.setState({
+      users: editedClient,
+      filteredUsers: editedClient,
+      isDisabled: true,
+      isSelected: false,
+    });
   };
 
   handleAddClient = () => {
@@ -43,37 +77,21 @@ class UsersList extends PureComponent {
     });
   };
 
-  handleEditClient = () => {
-    const newFirstName = prompt('Enter new first name:');
-    const newLastName = prompt('Enter new last name:');
-    const newSecondaryName = prompt('Enter new secondary name:');
-    const newBalance = +prompt('Enter new balance:');
-    this.setState((prevState) => ({
-      users: prevState.users.map((user) => {
-        if (user.id === this.props.id) {
-          return {
-            ...user,
-            first_name: newFirstName,
-            last_name: newLastName,
-            secondary_name: newSecondaryName,
-            balance: newBalance,
-          };
-        }
-        return user;
-      }),
-      filteredUsers: prevState.filteredUsers.map((user) => {
-        if (user.id === this.props.id) {
-          return {
-            ...user,
-            first_name: newFirstName,
-            last_name: newLastName,
-            secondary_name: newSecondaryName,
-            balance: newBalance,
-          };
-        }
-        return user;
-      }),
-    }));
+  handleEditClient = (id) => {
+    const editedClient = this.state.users.map((user) => {
+      if (user.id === id) {
+        return {
+          ...user,
+        };
+      }
+      return user;
+    });
+    this.setState({
+      users: editedClient,
+      filteredUsers: editedClient,
+      isDisabled: false,
+      isSelected: true,
+    });
   };
 
   handleFilterActive = () => {
@@ -105,6 +123,9 @@ class UsersList extends PureComponent {
           info={item}
           delClient={this.handleDeleteClient}
           editClient={this.handleEditClient}
+          isDisabled={this.state.isDisabled}
+          newText={this.setNewText}
+          isSelected={this.state.isSelected}
         />
       );
     });
