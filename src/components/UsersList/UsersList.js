@@ -31,29 +31,31 @@ class UsersList extends PureComponent {
     secondaryLink,
     balanceLink
   ) => {
-    let firstName = firstNameLink.current.value;
-    let lastName = lastNameLink.current.value;
-    let secondary = secondaryLink.current.value;
-    let balanceR = balanceLink.current.value;
-    const editedClient = this.state.filteredUsers.map((user) => {
-      if (user.id === id) {
-        return {
-          ...user,
-          first_name: firstName,
-          last_name: lastName,
-          secondary_name: secondary,
-          balance: +balanceR,
-        };
-      }
-      return user;
-    });
+    if ((id, firstNameLink, lastNameLink, secondaryLink, balanceLink)) {
+      let firstName = firstNameLink.current.value;
+      let lastName = lastNameLink.current.value;
+      let secondary = secondaryLink.current.value;
+      let balanceR = balanceLink.current.value;
+      const editedClient = this.state.filteredUsers.map((user) => {
+        if (user.id === id) {
+          return {
+            ...user,
+            first_name: firstName,
+            last_name: lastName,
+            secondary_name: secondary,
+            balance: +balanceR,
+          };
+        }
+        return user;
+      });
 
-    this.setState({
-      users: editedClient,
-      filteredUsers: editedClient,
-      isDisabled: true,
-      isSelected: false,
-    });
+      this.setState({
+        users: editedClient,
+        filteredUsers: editedClient,
+        isDisabled: true,
+        isSelected: false,
+      });
+    }
   };
 
   handleAddClient = () => {
@@ -194,7 +196,6 @@ class UsersList extends PureComponent {
           type="button"
           value="Add client"
           onClick={this.btnClickToAdd}
-          // {this.handleAddClient}
         />
       </>
     );

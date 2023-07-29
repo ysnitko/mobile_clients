@@ -12,7 +12,7 @@ class Client extends React.Component {
       balance: PropTypes.number.isRequired,
     }),
     isDisabled: PropTypes.bool.isRequired,
-    isSelected: PropTypes.bool,
+    isSelected: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -26,9 +26,7 @@ class Client extends React.Component {
   balanceRef = React.createRef();
 
   componentDidUpdate = (oldProps, oldState) => {
-    console.log(
-      'MobileClient id=' + this.props.info.id + ' componentDidUpdate'
-    );
+    console.log('Client id=' + this.props.info.id + ' componentDidUpdate');
     if (
       this.props.info !== this.state.info ||
       this.props.isDisabled !== this.state.isDisabled
