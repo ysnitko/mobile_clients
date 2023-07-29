@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { eventsListClients } from '../events';
 import './Client.css';
 class Client extends React.Component {
   static propTypes = {
@@ -10,11 +11,11 @@ class Client extends React.Component {
       secondary_name: PropTypes.string.isRequired,
       balance: PropTypes.number.isRequired,
     }),
-    delClient: PropTypes.func.isRequired,
-    editClient: PropTypes.func.isRequired,
+    // delClient: PropTypes.func.isRequired,
+    // editClient: PropTypes.func.isRequired,
     isDisabled: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool,
-    newText: PropTypes.func.isRequired,
+    // newText: PropTypes.func.isRequired,
   };
 
   state = {
@@ -47,6 +48,25 @@ class Client extends React.Component {
     return (
       newProps.info !== this.props.info ||
       newState.isDisabled !== this.state.isDisabled
+    );
+  };
+
+  btnClickToDelete = (event) => {
+    eventsListClients.emit('delClicked', this.props.info.id);
+  };
+
+  btnClickToEdit = (event) => {
+    eventsListClients.emit('editClicked', this.props.info.id);
+  };
+
+  btnClickToSave = (event) => {
+    eventsListClients.emit(
+      'saveClicked',
+      this.props.info.id,
+      this.firstNameRef,
+      this.lastNameRef,
+      this.secondaryNameRef,
+      this.balanceRef
     );
   };
 
@@ -112,24 +132,14 @@ class Client extends React.Component {
               className="edit-del-btn"
               type="button"
               value="Edit"
-              onClick={() => {
-                this.props.editClient(this.props.info.id);
-              }}
+              onClick={this.btnClickToEdit}
             />
           ) : (
             <input
               className="edit-del-btn"
               type="button"
               value="Save"
-              onClick={() =>
-                this.props.newText(
-                  this.props.info.id,
-                  this.firstNameRef,
-                  this.lastNameRef,
-                  this.secondaryNameRef,
-                  this.balanceRef
-                )
-              }
+              onClick={this.btnClickToSave}
             />
           )}
         </td>
@@ -138,7 +148,7 @@ class Client extends React.Component {
             className="edit-del-btn"
             type="button"
             value="Delete"
-            onClick={() => this.props.delClient(this.props.info.id)}
+            onClick={this.btnClickToDelete}
           />
         </td>
       </tr>

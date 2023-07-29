@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Client from '../Client/Client';
+import { eventsListClients } from '../events';
 import './UsersLits.css';
+
 class UsersList extends PureComponent {
   static propTypes = {
     users: PropTypes.arrayOf(
@@ -77,6 +79,18 @@ class UsersList extends PureComponent {
     });
   };
 
+  componentDidMount = () => {
+    eventsListClients.addListener('delClicked', this.handleDeleteClient);
+    eventsListClients.addListener('editClicked', this.handleEditClient);
+    eventsListClients.addListener('saveClicked', this.setNewText);
+  };
+
+  componentWillUnmount = () => {
+    eventsListClients.removeListener('delClicked', this.handleDeleteClient);
+    eventsListClients.removeListener('editClicked', this.handleEditClient);
+    eventsListClients.removeListener('saveClicked', this.setNewText);
+  };
+
   handleEditClient = (id) => {
     const editedClient = this.state.users.map((user) => {
       if (user.id === id) {
@@ -121,10 +135,10 @@ class UsersList extends PureComponent {
         <Client
           key={item.id}
           info={item}
-          delClient={this.handleDeleteClient}
-          editClient={this.handleEditClient}
+          // delClient={this.handleDeleteClient}
+          // editClient={this.handleEditClient}
           isDisabled={this.state.isDisabled}
-          newText={this.setNewText}
+          // newText={this.setNewText}
           isSelected={this.state.isSelected}
         />
       );
