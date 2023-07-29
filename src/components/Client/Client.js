@@ -11,11 +11,8 @@ class Client extends React.Component {
       secondary_name: PropTypes.string.isRequired,
       balance: PropTypes.number.isRequired,
     }),
-    // delClient: PropTypes.func.isRequired,
-    // editClient: PropTypes.func.isRequired,
     isDisabled: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool,
-    // newText: PropTypes.func.isRequired,
   };
 
   state = {

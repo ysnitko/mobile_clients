@@ -79,18 +79,6 @@ class UsersList extends PureComponent {
     });
   };
 
-  componentDidMount = () => {
-    eventsListClients.addListener('delClicked', this.handleDeleteClient);
-    eventsListClients.addListener('editClicked', this.handleEditClient);
-    eventsListClients.addListener('saveClicked', this.setNewText);
-  };
-
-  componentWillUnmount = () => {
-    eventsListClients.removeListener('delClicked', this.handleDeleteClient);
-    eventsListClients.removeListener('editClicked', this.handleEditClient);
-    eventsListClients.removeListener('saveClicked', this.setNewText);
-  };
-
   handleEditClient = (id) => {
     const editedClient = this.state.users.map((user) => {
       if (user.id === id) {
@@ -128,6 +116,42 @@ class UsersList extends PureComponent {
     });
   };
 
+  componentDidMount = () => {
+    eventsListClients.addListener('delClicked', this.handleDeleteClient);
+    eventsListClients.addListener('editClicked', this.handleEditClient);
+    eventsListClients.addListener('saveClicked', this.setNewText);
+    eventsListClients.addListener('addClicked', this.handleAddClient);
+    eventsListClients.addListener('filterActive', this.handleFilterActive);
+    eventsListClients.addListener('filterBlock', this.handleFilterBlocked);
+    eventsListClients.addListener('showAll', this.handleShowAll);
+  };
+
+  componentWillUnmount = () => {
+    eventsListClients.removeListener('delClicked', this.handleDeleteClient);
+    eventsListClients.removeListener('editClicked', this.handleEditClient);
+    eventsListClients.removeListener('saveClicked', this.setNewText);
+    eventsListClients.removeListener('addClicked', this.handleAddClient);
+    eventsListClients.removeListener('filterActive', this.handleFilterActive);
+    eventsListClients.removeListener('filterBlock', this.handleFilterBlocked);
+    eventsListClients.removeListener('showAll', this.handleShowAll);
+  };
+
+  btnClickToAdd = (event) => {
+    eventsListClients.emit('addClicked', null);
+  };
+
+  btnClickToActive = (event) => {
+    eventsListClients.emit('filterActive', null);
+  };
+
+  btnClickToBlocked = (event) => {
+    eventsListClients.emit('filterBlock', null);
+  };
+
+  btnClickToAll = (event) => {
+    eventsListClients.emit('showAll', null);
+  };
+
   render() {
     console.log('UserList render');
     const usersList = this.state.filteredUsers.map((item) => {
@@ -135,10 +159,7 @@ class UsersList extends PureComponent {
         <Client
           key={item.id}
           info={item}
-          // delClient={this.handleDeleteClient}
-          // editClient={this.handleEditClient}
           isDisabled={this.state.isDisabled}
-          // newText={this.setNewText}
           isSelected={this.state.isSelected}
         />
       );
@@ -146,16 +167,12 @@ class UsersList extends PureComponent {
     return (
       <>
         <div className="btn-block">
-          <input type="button" value="all" onClick={this.handleShowAll} />
-          <input
-            type="button"
-            value="active"
-            onClick={this.handleFilterActive}
-          />
+          <input type="button" value="all" onClick={this.btnClickToAll} />
+          <input type="button" value="active" onClick={this.btnClickToActive} />
           <input
             type="button"
             value="blocked"
-            onClick={this.handleFilterBlocked}
+            onClick={this.btnClickToBlocked}
           />
         </div>
         <table>
@@ -176,7 +193,8 @@ class UsersList extends PureComponent {
           className="add-user-btn"
           type="button"
           value="Add client"
-          onClick={this.handleAddClient}
+          onClick={this.btnClickToAdd}
+          // {this.handleAddClient}
         />
       </>
     );
