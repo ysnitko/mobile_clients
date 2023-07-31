@@ -11,13 +11,14 @@ class Client extends React.PureComponent {
       secondary_name: PropTypes.string.isRequired,
       balance: PropTypes.number.isRequired,
     }),
-    isDisabled: PropTypes.bool.isRequired,
-    isSelected: PropTypes.bool.isRequired,
+    // isDisabled: PropTypes.bool.isRequired,
+
+    selectedId: PropTypes.number,
   };
 
   state = {
     info: this.props.info,
-    isDisabled: this.props.isDisabled,
+    // isDisabled: this.props.isDisabled,
   };
 
   firstNameRef = React.createRef();
@@ -29,11 +30,11 @@ class Client extends React.PureComponent {
     console.log('Client id=' + this.props.info.id + ' componentDidUpdate');
     if (
       this.props.info !== this.state.info ||
-      this.props.isDisabled !== this.state.isDisabled
+      oldProps.selectedId !== this.props.selectedId
     ) {
       this.setState({
         info: this.props.info,
-        isDisabled: this.props.isDisabled,
+        // isDisabled: this.props.isDisabled,
       });
     }
   };
@@ -70,7 +71,11 @@ class Client extends React.PureComponent {
     return (
       <tr
         className="User"
-        style={this.props.isSelected ? { backgroundColor: '#b5f5d0' } : {}}
+        style={
+          this.props.selectedId !== this.props.info.id
+            ? {}
+            : { backgroundColor: '#b5f5d0' }
+        }
       >
         <td>
           <input
@@ -79,7 +84,9 @@ class Client extends React.PureComponent {
             name=""
             defaultValue={this.state.info.first_name}
             style={{ textAlign: 'center', border: 'none' }}
-            disabled={this.props.isDisabled}
+            disabled={
+              this.props.selectedId !== this.props.info.id ? true : false
+            }
           />
         </td>
         <td>
@@ -89,7 +96,9 @@ class Client extends React.PureComponent {
             name=""
             defaultValue={this.state.info.last_name}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={this.props.isDisabled}
+            disabled={
+              this.props.selectedId !== this.props.info.id ? true : false
+            }
           />
         </td>
         <td>
@@ -99,7 +108,9 @@ class Client extends React.PureComponent {
             name=""
             defaultValue={this.state.info.secondary_name}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={this.props.isDisabled}
+            disabled={
+              this.props.selectedId !== this.props.info.id ? true : false
+            }
           />
         </td>
         <td>
@@ -109,7 +120,9 @@ class Client extends React.PureComponent {
             name=""
             defaultValue={this.state.info.balance}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={this.props.isDisabled}
+            disabled={
+              this.props.selectedId !== this.props.info.id ? true : false
+            }
           />
         </td>
         <td
@@ -122,7 +135,7 @@ class Client extends React.PureComponent {
           {this.props.info.balance >= 0 ? 'active' : 'blocked'}
         </td>
         <td>
-          {this.state.isDisabled ? (
+          {this.props.selectedId !== this.props.info.id ? (
             <input
               className="edit-del-btn"
               type="button"

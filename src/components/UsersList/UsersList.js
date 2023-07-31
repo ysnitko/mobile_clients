@@ -24,6 +24,7 @@ class UsersList extends PureComponent {
     filteredAll: this.props.users || [],
     isDisabled: true,
     isSelected: false,
+    selectedId: null,
   };
 
   setNewText = (
@@ -56,6 +57,7 @@ class UsersList extends PureComponent {
         filteredAll: editedClient,
         isDisabled: true,
         isSelected: false,
+        selectedId: null,
       });
     }
   };
@@ -88,16 +90,8 @@ class UsersList extends PureComponent {
   };
 
   handleEditClient = (id) => {
-    const editedClient = this.state.filteredAll.map((user) => {
-      if (user.id === id) {
-        return {
-          ...user,
-        };
-      }
-      return user;
-    });
     this.setState({
-      filteredAll: editedClient,
+      selectedId: id,
       isDisabled: false,
       isSelected: true,
     });
@@ -179,6 +173,7 @@ class UsersList extends PureComponent {
           info={item}
           isDisabled={this.state.isDisabled}
           isSelected={this.state.isSelected}
+          selectedId={this.state.selectedId}
         />
       );
     });
