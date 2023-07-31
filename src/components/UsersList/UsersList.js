@@ -19,7 +19,9 @@ class UsersList extends PureComponent {
 
   state = {
     users: this.props.users,
-    filteredUsers: this.props.users,
+    filteredActive: [],
+    filteredBlocked: [],
+    filteredAll: this.props.users || [],
     isDisabled: true,
     isSelected: false,
   };
@@ -36,7 +38,7 @@ class UsersList extends PureComponent {
       let lastName = lastNameLink.current.value;
       let secondary = secondaryLink.current.value;
       let balanceR = balanceLink.current.value;
-      const editedClient = this.state.filteredUsers.map((user) => {
+      const editedClient = this.state.filteredAll.map((user) => {
         if (user.id === id) {
           return {
             ...user,
@@ -51,7 +53,7 @@ class UsersList extends PureComponent {
 
       this.setState({
         users: editedClient,
-        filteredUsers: editedClient,
+        filteredAll: editedClient,
         isDisabled: true,
         isSelected: false,
       });
@@ -69,21 +71,24 @@ class UsersList extends PureComponent {
     const addNewClient = [...this.state.users, newClient];
     this.setState({
       users: addNewClient,
-      filteredUsers: addNewClient,
+      filteredAll: addNewClient,
     });
   };
 
   handleDeleteClient = (id) => {
     const deletedClient = this.state.users.filter((user) => user.id !== id);
-    this.setState({
+    this.setState((prevState) => ({
       users: deletedClient,
-      filteredUsers: deletedClient,
-    });
+      filteredActive: prevState.filteredActive.filter((user) => user.id !== id),
+      filteredBlocked: prevState.filteredBlocked.filter(
+        (user) => user.id !== id
+      ),
+      filteredAll: prevState.filteredAll.filter((user) => user.id !== id),
+    }));
   };
 
   handleEditClient = (id) => {
-    const copyArray = this.state.filteredUsers.slice();
-    const editedClient = copyArray.map((user) => {
+    const editedClient = this.state.filteredAll.map((user) => {
       if (user.id === id) {
         return {
           ...user,
@@ -92,27 +97,27 @@ class UsersList extends PureComponent {
       return user;
     });
     this.setState({
-      filteredUsers: editedClient,
+      filteredAll: editedClient,
       isDisabled: false,
       isSelected: true,
     });
   };
 
   handleFilterActive = () => {
-    const copyArray = this.state.users.slice();
-    const activeClients = copyArray.filter((item) => item.balance >= 0);
+    const activeClients = this.state.users.filter((item) => item.balance > 0);
     this.setState({
-      filteredUsers: activeClients,
+      filteredActive: activeClients,
+      filteredAll: [...activeClients],
       isDisabled: true,
       isSelected: false,
     });
   };
 
   handleFilterBlocked = () => {
-    const copyArray = this.state.users.slice();
-    const blockedClients = copyArray.filter((item) => item.balance < 0);
+    const blockedClients = this.state.users.filter((item) => item.balance < 0);
     this.setState({
-      filteredUsers: blockedClients,
+      filteredBlocked: blockedClients,
+      filteredAll: [...blockedClients],
       isDisabled: true,
       isSelected: false,
     });
@@ -120,7 +125,10 @@ class UsersList extends PureComponent {
 
   handleShowAll = () => {
     this.setState({
-      filteredUsers: this.state.users,
+      filteredAll: [
+        ...this.state.filteredActive,
+        ...this.state.filteredBlocked,
+      ],
       isDisabled: true,
       isSelected: false,
     });
@@ -164,7 +172,7 @@ class UsersList extends PureComponent {
 
   render() {
     console.log('UserList render');
-    const usersList = this.state.filteredUsers.map((item) => {
+    const usersList = this.state.filteredAll.map((item) => {
       return (
         <Client
           key={item.id}

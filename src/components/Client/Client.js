@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { eventsListClients } from '../events';
 import './Client.css';
-class Client extends React.Component {
+class Client extends React.PureComponent {
   static propTypes = {
     info: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -38,13 +38,13 @@ class Client extends React.Component {
     }
   };
 
-  shouldComponentUpdate = (newProps, newState) => {
-    console.log('Client id=' + this.props.info.id + ' shouldComponentUpdate');
-    return (
-      newProps.info !== this.props.info ||
-      newState.isDisabled !== this.state.isDisabled
-    );
-  };
+  // shouldComponentUpdate = (newProps, newState) => {
+  //   console.log('Client id=' + this.props.info.id + ' shouldComponentUpdate');
+  //   return (
+  //     newProps.info !== this.props.info ||
+  //     newState.isDisabled !== this.state.isDisabled
+  //   );
+  // };
 
   btnClickToDelete = (event) => {
     eventsListClients.emit('delClicked', this.props.info.id);
