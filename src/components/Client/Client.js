@@ -60,9 +60,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.first_name}
             style={{ textAlign: 'center', border: 'none' }}
-            disabled={
-              this.props.selectedId !== this.props.info.id ? true : false
-            }
+            disabled={this.props.selectedId !== this.props.info.id}
           />
         </td>
         <td>
@@ -72,9 +70,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.last_name}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={
-              this.props.selectedId !== this.props.info.id ? true : false
-            }
+            disabled={this.props.selectedId !== this.props.info.id}
           />
         </td>
         <td>
@@ -84,9 +80,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.secondary_name}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={
-              this.props.selectedId !== this.props.info.id ? true : false
-            }
+            disabled={this.props.selectedId !== this.props.info.id}
           />
         </td>
         <td>
@@ -96,9 +90,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.balance}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={
-              this.props.selectedId !== this.props.info.id ? true : false
-            }
+            disabled={this.props.selectedId !== this.props.info.id}
           />
         </td>
         <td
