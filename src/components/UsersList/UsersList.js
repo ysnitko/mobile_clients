@@ -21,9 +21,7 @@ class UsersList extends PureComponent {
     users: this.props.users,
     filteredActive: [],
     filteredBlocked: [],
-    filteredAll: this.props.users || [],
-    isDisabled: true,
-    isSelected: false,
+    filteredAll: this.props.users,
     selectedId: null,
   };
 
@@ -55,8 +53,6 @@ class UsersList extends PureComponent {
       this.setState({
         users: editedClient,
         filteredAll: editedClient,
-        isDisabled: true,
-        isSelected: false,
         selectedId: null,
       });
     }
@@ -92,8 +88,6 @@ class UsersList extends PureComponent {
   handleEditClient = (id) => {
     this.setState({
       selectedId: id,
-      isDisabled: false,
-      isSelected: true,
     });
   };
 
@@ -102,8 +96,6 @@ class UsersList extends PureComponent {
     this.setState({
       filteredActive: activeClients,
       filteredAll: [...activeClients],
-      isDisabled: true,
-      isSelected: false,
     });
   };
 
@@ -112,8 +104,6 @@ class UsersList extends PureComponent {
     this.setState({
       filteredBlocked: blockedClients,
       filteredAll: [...blockedClients],
-      isDisabled: true,
-      isSelected: false,
     });
   };
 
@@ -123,8 +113,6 @@ class UsersList extends PureComponent {
         ...this.state.filteredActive,
         ...this.state.filteredBlocked,
       ],
-      isDisabled: true,
-      isSelected: false,
     });
   };
 
@@ -168,13 +156,7 @@ class UsersList extends PureComponent {
     console.log('UserList render');
     const usersList = this.state.filteredAll.map((item) => {
       return (
-        <Client
-          key={item.id}
-          info={item}
-          isDisabled={this.state.isDisabled}
-          isSelected={this.state.isSelected}
-          selectedId={this.state.selectedId}
-        />
+        <Client key={item.id} info={item} selectedId={this.state.selectedId} />
       );
     });
     return (

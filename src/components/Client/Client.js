@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { eventsListClients } from '../events';
 import './Client.css';
-class Client extends React.PureComponent {
+class Client extends PureComponent {
   static propTypes = {
     info: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -11,41 +11,17 @@ class Client extends React.PureComponent {
       secondary_name: PropTypes.string.isRequired,
       balance: PropTypes.number.isRequired,
     }),
-    // isDisabled: PropTypes.bool.isRequired,
-
     selectedId: PropTypes.number,
   };
 
   state = {
     info: this.props.info,
-    // isDisabled: this.props.isDisabled,
   };
 
   firstNameRef = React.createRef();
   lastNameRef = React.createRef();
   secondaryNameRef = React.createRef();
   balanceRef = React.createRef();
-
-  componentDidUpdate = (oldProps, oldState) => {
-    console.log('Client id=' + this.props.info.id + ' componentDidUpdate');
-    if (
-      this.props.info !== this.state.info ||
-      oldProps.selectedId !== this.props.selectedId
-    ) {
-      this.setState({
-        info: this.props.info,
-        // isDisabled: this.props.isDisabled,
-      });
-    }
-  };
-
-  // shouldComponentUpdate = (newProps, newState) => {
-  //   console.log('Client id=' + this.props.info.id + ' shouldComponentUpdate');
-  //   return (
-  //     newProps.info !== this.props.info ||
-  //     newState.isDisabled !== this.state.isDisabled
-  //   );
-  // };
 
   btnClickToDelete = (event) => {
     eventsListClients.emit('delClicked', this.props.info.id);
