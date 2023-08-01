@@ -108,12 +108,15 @@ class UsersList extends PureComponent {
   };
 
   handleShowAll = () => {
-    this.setState({
-      filteredAll: [
-        ...this.state.filteredActive,
-        ...this.state.filteredBlocked,
-      ],
-    });
+    this.state.filteredActive.length === 0 &&
+    this.state.filteredBlocked.length === 0
+      ? this.setState({ filteredAll: this.state.users })
+      : this.setState({
+          filteredAll: [
+            ...this.state.filteredActive,
+            ...this.state.filteredBlocked,
+          ],
+        });
   };
 
   componentDidMount = () => {
