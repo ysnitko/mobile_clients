@@ -22,40 +22,6 @@ class UsersList extends PureComponent {
     filteredActive: [],
     filteredBlocked: [],
     filteredAll: this.props.users,
-    selectedId: null,
-  };
-
-  setNewText = (
-    id,
-    firstNameLink,
-    lastNameLink,
-    secondaryLink,
-    balanceLink
-  ) => {
-    if ((id, firstNameLink, lastNameLink, secondaryLink, balanceLink)) {
-      let firstName = firstNameLink.current.value;
-      let lastName = lastNameLink.current.value;
-      let secondary = secondaryLink.current.value;
-      let balanceR = balanceLink.current.value;
-      const editedClient = this.state.filteredAll.map((user) => {
-        if (user.id === id) {
-          return {
-            ...user,
-            first_name: firstName,
-            last_name: lastName,
-            secondary_name: secondary,
-            balance: +balanceR,
-          };
-        }
-        return user;
-      });
-
-      this.setState({
-        users: editedClient,
-        filteredAll: editedClient,
-        selectedId: null,
-      });
-    }
   };
 
   handleAddClient = () => {
@@ -86,9 +52,48 @@ class UsersList extends PureComponent {
   };
 
   handleEditClient = (id) => {
-    this.setState({
-      selectedId: id,
+    const editedClient = this.state.filteredAll.map((user) => {
+      if (user.id === id) {
+        return {
+          ...user,
+        };
+      }
+      return user;
     });
+
+    this.setState({ users: [editedClient], filteredAll: editedClient });
+  };
+
+  handleSaveText = (
+    id,
+    firstNameLink,
+    lastNameLink,
+    secondaryLink,
+    balanceLink
+  ) => {
+    if ((id, firstNameLink, lastNameLink, secondaryLink, balanceLink)) {
+      let firstName = firstNameLink.current.value;
+      let lastName = lastNameLink.current.value;
+      let secondary = secondaryLink.current.value;
+      let balanceR = balanceLink.current.value;
+      const editedClient = this.state.filteredAll.map((user) => {
+        if (user.id === id) {
+          return {
+            ...user,
+            first_name: firstName,
+            last_name: lastName,
+            secondary_name: secondary,
+            balance: +balanceR,
+          };
+        }
+        return user;
+      });
+
+      this.setState({
+        users: editedClient,
+        filteredAll: editedClient,
+      });
+    }
   };
 
   handleFilterActive = () => {
@@ -121,22 +126,22 @@ class UsersList extends PureComponent {
 
   componentDidMount = () => {
     eventsListClients.addListener('delClicked', this.handleDeleteClient);
-    eventsListClients.addListener('editClicked', this.handleEditClient);
-    eventsListClients.addListener('saveClicked', this.setNewText);
     eventsListClients.addListener('addClicked', this.handleAddClient);
     eventsListClients.addListener('filterActive', this.handleFilterActive);
     eventsListClients.addListener('filterBlock', this.handleFilterBlocked);
     eventsListClients.addListener('showAll', this.handleShowAll);
+    eventsListClients.addListener('editClicked', this.handleEditClient);
+    eventsListClients.addListener('saveClicked', this.handleSaveText);
   };
 
   componentWillUnmount = () => {
     eventsListClients.removeListener('delClicked', this.handleDeleteClient);
-    eventsListClients.removeListener('editClicked', this.handleEditClient);
-    eventsListClients.removeListener('saveClicked', this.setNewText);
     eventsListClients.removeListener('addClicked', this.handleAddClient);
     eventsListClients.removeListener('filterActive', this.handleFilterActive);
     eventsListClients.removeListener('filterBlock', this.handleFilterBlocked);
     eventsListClients.removeListener('showAll', this.handleShowAll);
+    eventsListClients.removeListener('editClicked', this.handleEditClient);
+    eventsListClients.removeListener('saveClicked', this.handleSaveText);
   };
 
   btnClickToAdd = (event) => {
@@ -159,7 +164,14 @@ class UsersList extends PureComponent {
     console.log('UserList render');
     const usersList = this.state.filteredAll.map((item) => {
       return (
-        <Client key={item.id} info={item} selectedId={this.state.selectedId} />
+        <Client
+          key={item.id}
+          info={item}
+          firstNameRef={this.firstNameRef}
+          lastNameRef={this.lastNameRef}
+          secondaryNameRef={this.secondaryNameRef}
+          balanceRef={this.balanceRef}
+        />
       );
     });
     return (

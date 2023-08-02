@@ -11,11 +11,11 @@ class Client extends PureComponent {
       secondary_name: PropTypes.string.isRequired,
       balance: PropTypes.number.isRequired,
     }),
-    selectedId: PropTypes.number,
   };
 
   state = {
     info: this.props.info,
+    isSelected: true,
   };
 
   firstNameRef = React.createRef();
@@ -28,10 +28,12 @@ class Client extends PureComponent {
   };
 
   btnClickToEdit = (event) => {
-    eventsListClients.emit('editClicked', this.props.info.id);
+    this.setState({ isSelected: false });
+    eventsListClients.emit('editClicked', this.state.info.id);
   };
 
   btnClickToSave = (event) => {
+    this.setState({ isSelected: true });
     eventsListClients.emit(
       'saveClicked',
       this.props.info.id,
@@ -45,14 +47,7 @@ class Client extends PureComponent {
   render() {
     console.log('Client id=' + this.props.info.id + ' render ');
     return (
-      <tr
-        className="User"
-        style={
-          this.props.selectedId !== this.props.info.id
-            ? {}
-            : { backgroundColor: '#b5f5d0' }
-        }
-      >
+      <tr className="User">
         <td>
           <input
             type="text"
@@ -60,7 +55,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.first_name}
             style={{ textAlign: 'center', border: 'none' }}
-            disabled={this.props.selectedId !== this.props.info.id}
+            disabled={this.state.isSelected}
           />
         </td>
         <td>
@@ -70,7 +65,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.last_name}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={this.props.selectedId !== this.props.info.id}
+            disabled={this.state.isSelected}
           />
         </td>
         <td>
@@ -80,7 +75,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.secondary_name}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={this.props.selectedId !== this.props.info.id}
+            disabled={this.state.isSelected}
           />
         </td>
         <td>
@@ -90,7 +85,7 @@ class Client extends PureComponent {
             name=""
             defaultValue={this.state.info.balance}
             style={{ border: 'none', textAlign: 'center' }}
-            disabled={this.props.selectedId !== this.props.info.id}
+            disabled={this.state.isSelected}
           />
         </td>
         <td
@@ -103,7 +98,7 @@ class Client extends PureComponent {
           {this.props.info.balance >= 0 ? 'active' : 'blocked'}
         </td>
         <td>
-          {this.props.selectedId !== this.props.info.id ? (
+          {this.state.isSelected ? (
             <input
               className="edit-del-btn"
               type="button"
