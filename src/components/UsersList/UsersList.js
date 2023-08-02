@@ -19,8 +19,6 @@ class UsersList extends PureComponent {
 
   state = {
     users: this.props.users,
-    filteredActive: [],
-    filteredBlocked: [],
     filteredAll: this.props.users,
   };
 
@@ -41,14 +39,13 @@ class UsersList extends PureComponent {
 
   handleDeleteClient = (id) => {
     const deletedClient = this.state.users.filter((user) => user.id !== id);
-    this.setState((prevState) => ({
+    const deletedClientFiltered = this.state.filteredAll.filter(
+      (user) => user.id !== id
+    );
+    this.setState({
       users: deletedClient,
-      filteredActive: prevState.filteredActive.filter((user) => user.id !== id),
-      filteredBlocked: prevState.filteredBlocked.filter(
-        (user) => user.id !== id
-      ),
-      filteredAll: prevState.filteredAll.filter((user) => user.id !== id),
-    }));
+      filteredAll: deletedClientFiltered,
+    });
   };
 
   handleEditClient = (id) => {
@@ -97,29 +94,21 @@ class UsersList extends PureComponent {
   handleFilterActive = () => {
     const activeClients = this.state.users.filter((item) => item.balance > 0);
     this.setState({
-      filteredActive: activeClients,
-      filteredAll: [...activeClients],
+      filteredAll: activeClients,
     });
   };
 
   handleFilterBlocked = () => {
     const blockedClients = this.state.users.filter((item) => item.balance < 0);
     this.setState({
-      filteredBlocked: blockedClients,
-      filteredAll: [...blockedClients],
+      filteredAll: blockedClients,
     });
   };
 
   handleShowAll = () => {
-    this.state.filteredActive.length === 0 &&
-    this.state.filteredBlocked.length === 0
-      ? this.setState({ filteredAll: this.state.users })
-      : this.setState({
-          filteredAll: [
-            ...this.state.filteredActive,
-            ...this.state.filteredBlocked,
-          ],
-        });
+    this.setState({
+      filteredAll: this.state.users,
+    });
   };
 
   componentDidMount = () => {
@@ -161,16 +150,7 @@ class UsersList extends PureComponent {
   render() {
     console.log('UserList render');
     const usersList = this.state.filteredAll.map((item) => {
-      return (
-        <Client
-          key={item.id}
-          info={item}
-          firstNameRef={this.firstNameRef}
-          lastNameRef={this.lastNameRef}
-          secondaryNameRef={this.secondaryNameRef}
-          balanceRef={this.balanceRef}
-        />
-      );
+      return <Client key={item.id} info={item} />;
     });
     return (
       <>
