@@ -60,7 +60,6 @@ class UsersList extends PureComponent {
       }
       return user;
     });
-
     this.setState({ users: [editedClient], filteredAll: editedClient });
   };
 
@@ -88,7 +87,6 @@ class UsersList extends PureComponent {
         }
         return user;
       });
-
       this.setState({
         users: editedClient,
         filteredAll: editedClient,

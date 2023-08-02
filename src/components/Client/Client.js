@@ -47,7 +47,10 @@ class Client extends PureComponent {
   render() {
     console.log('Client id=' + this.props.info.id + ' render ');
     return (
-      <tr className="User">
+      <tr
+        className="User"
+        style={!this.state.isSelected ? { background: '#42f598' } : {}}
+      >
         <td>
           <input
             type="text"
